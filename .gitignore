@@ -1,0 +1,25 @@
+# Ignore model weights
+*.pth
+*.pt
+
+# Ignore datasets
+*.zip
+*.rar
+*.7z
+*.csv
+
+# Ignore images & large files
+*.png
+*.jpg
+*.jpeg
+
+# Ignore dirs
+datasets/
+data/
+models/
+checkpoints/
+
+# Ignore generated files
+__pycache__/
+*.log
+*.mp4
