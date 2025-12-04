@@ -1,38 +1,62 @@
-# Vehicle Damage Detection App
+# 🚗 Vehicle Damage Detection App
+
+This project is a **vehicle damage detection system** that predicts the type of damage on a car image. The app allows users to **drag and drop an image of a car**, and the system will classify the damage based on the **third quarter front or rear view** of the car. The model is trained using **ResNet50 transfer learning** for high accuracy and fast predictions.
+
+---
 
 ![App Screenshot](app_screenshot.jpg)
 
-## Project Overview
-This web application allows you to **drag and drop an image of a car** and predicts the type of damage it has. The model is trained specifically on **third quarter front and rear views**, so the uploaded image should capture the car from these angles for accurate predictions.
+---
+
+## 📌 Key Features
+
+- ✅ Predicts **Front/Rear damage** and type (**Normal, Crushed, Breakage**)
+- ✅ Supports **third quarter front and rear car views**
+- ✅ Lightweight and interactive frontend built with **Streamlit**
+- ✅ Uses pre-trained **ResNet50** model for transfer learning
+- ✅ Quick predictions with ~80% validation accuracy
 
 ---
 
-## Model Details
-- **Architecture:** ResNet50 (Transfer Learning)  
-- **Dataset:** ~1700 images  
-- **Target Classes (6):**
-  1. Front Normal  
-  2. Front Crushed  
-  3. Front Breakage  
-  4. Rear Normal  
-  5. Rear Crushed  
-  6. Rear Breakage  
+## ⚙️ Tech Stack
 
-- **Validation Accuracy:** ~80%
+| Layer        | Tools & Libraries            |
+|--------------|------------------------------|
+| Frontend     | Streamlit                    |
+| Backend      | Python                       |
+| ML Libraries | PyTorch, NumPy, PIL          |
+| Deployment   | Local / Streamlit Sharing    |
 
 ---
 
-## Features
-- Upload images via drag-and-drop interface.
-- Predicts car damage type instantly.
-- Lightweight, easy-to-use interface built with **Streamlit**.
-- Supports common car images taken from the third quarter front or rear view.
+## 🧪 Sample Output
+
+- **Uploaded Image:** `car_front.jpg`  
+- **Prediction:** Front Crushed  
+
+- **Uploaded Image:** `car_rear.jpg`  
+- **Prediction:** Rear Breakage  
 
 ---
 
-## Setup Instructions
+## 🗂️ Project Structure
 
-1. **Clone the repository**
+vehicle-damage-detection/
+├── app.py # Main Streamlit app
+├── model_helper.py # Model loading and prediction logic
+├── trained_model.pth 
+├── dataset
+├── requirements.txt # Python dependencies
+├── README.md # Project documentation
+└── app_screenshot.jpg # App screenshot
+
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
 ```bash
-git clone https://github.com/yourusername/Car-Damage-Detection.git
-cd Car-Damage-Detection
+git clone https://github.com/your-username/vehicle-damage-detection.git
+cd vehicle-damage-detection
