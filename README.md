@@ -4,7 +4,7 @@ This project is a **vehicle damage detection system** that predicts the type of 
 
 ---
 
-![App Screenshot](app_screenshot.jpg)
+![App Screenshot](app.jpg)
 
 ---
 
