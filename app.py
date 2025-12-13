@@ -1,4 +1,3 @@
-# ...existing code...
 import streamlit as st
 from model_helper import predict
 import traceback, os
@@ -24,4 +23,3 @@ if uploaded_file:
     except Exception:
         st.error("Prediction failed — check the terminal for details.")
         st.code(traceback.format_exc())
-# ...existing code...
