@@ -52,11 +52,3 @@ vehicle-damage-detection/
 
 
 ---
-
-## 🚀 Getting Started
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/your-username/vehicle-damage-detection.git
-cd vehicle-damage-detection
