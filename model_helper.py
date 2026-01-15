@@ -1,4 +1,3 @@
-# ...existing code...
 import os
 import torch
 from torch import nn
@@ -6,20 +5,24 @@ from torchvision import models, transforms
 from PIL import Image
 
 trained_model = None
-class_names = ['Front Breakage', 'Front Crushed', 'Front Normal', 'Rear Breakage', 'Rear Crushed', 'Rear Normal']
+class_names = [
+    'Front Breakage', 'Front Crushed', 'Front Normal',
+    'Rear Breakage', 'Rear Crushed', 'Rear Normal'
+]
+
+MODEL_URL = "https://huggingface.co/sanjays1108/car-damage-detection-model/resolve/main/saved_model.pth"
 
 class CarClassifierResNet(nn.Module):
     def __init__(self, num_classes=6):
         super().__init__()
-        # create base resnet50 (keep original API in your environment)
-        self.model = models.resnet50(weights='DEFAULT')
-        # freeze all layers
+        self.model = models.resnet50(weights="DEFAULT")
+
         for param in self.model.parameters():
             param.requires_grad = False
-        # unfreeze layer4
+
         for param in self.model.layer4.parameters():
             param.requires_grad = True
-        # replace final fc
+
         self.model.fc = nn.Sequential(
             nn.Dropout(0.2),
             nn.Linear(self.model.fc.in_features, num_classes)
@@ -28,12 +31,33 @@ class CarClassifierResNet(nn.Module):
     def forward(self, x):
         return self.model(x)
 
+
+def load_model():
+    model_dir = os.path.join(os.path.dirname(__file__), "model")
+    model_path = os.path.join(model_dir, "saved_model.pth")
+    os.makedirs(model_dir, exist_ok=True)
+
+    if not os.path.exists(model_path):
+        import requests
+        r = requests.get(MODEL_URL)
+        r.raise_for_status()
+        with open(model_path, "wb") as f:
+            f.write(r.content)
+
+    model = CarClassifierResNet()
+    model.load_state_dict(torch.load(model_path, map_location="cpu"))
+    model.eval()
+    return model
+
+
 def predict(image_path):
-    # transforms
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        transforms.Normalize(
+            mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225]
+        )
     ])
 
     image = Image.open(image_path).convert("RGB")
@@ -41,23 +65,10 @@ def predict(image_path):
 
     global trained_model
     if trained_model is None:
-        # ensure model path is resolved relative to this file
-        model_dir = os.path.join(os.path.dirname(__file__), "model")
-        model_path = os.path.join(model_dir, "saved_model.pth")
-        if not os.path.exists(model_path):
-            raise FileNotFoundError(f"Model file not found: {model_path}")
-
-        trained_model = CarClassifierResNet()
-        # load on CPU to avoid CUDA-device mismatches
-        trained_model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
-        trained_model.eval()
-
-    # ensure tensor and model are on same device (CPU here)
-    device = next(trained_model.parameters()).device
-    image_tensor = image_tensor.to(device)
+        trained_model = load_model()
 
     with torch.no_grad():
         output = trained_model(image_tensor)
         _, predicted_class = torch.max(output, 1)
-        return class_names[predicted_class.item()]
-# ...existing code...
+
+    return class_names[predicted_class.item()]
